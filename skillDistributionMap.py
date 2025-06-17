@@ -47,7 +47,7 @@ layerControl = folium.LayerControl(position='topright', collapsed=True)
 # Creating a toggleable layer for Lotus Locations
 
 fg = folium.FeatureGroup(name="Group Lotus Locations", show=True)
-hethelMarker = folium.Marker(location=(52.5607858,1.1772759), popup="Lotus Hethel", icon=folium.Icon(color='darkgreen', icon='none'))
+hethelMarker = folium.Marker(location=(52.5607858,1.1772759), popup="Lotus Hethel", icon=folium.Icon(color='red', icon='none'))
 hethelMarker.add_to(fg)
 lasMarker = folium.Marker(location=(52.6664829,1.2789882), popup="LAS", icon=folium.Icon(color='green', icon='none'))
 lasMarker.add_to(fg)
@@ -76,8 +76,11 @@ for i in x:
          if location:
                
             # "Circle" Marker icon
-            marker = folium.Circle(radius=4000, fill_color=skill_colours.get(skill), fill_opacity=0.4, color=skill_colours.get(skill), weight=1.5, location=[float(location.latitude), float(location.longitude)])
-            
+            marker = folium.Circle(radius=800, fill_color=skill_colours.get(skill), fill_opacity=0.4, color=skill_colours.get(skill), weight=1, location=[float(location.latitude), float(location.longitude)])
+            #marker.add_child(folium.Popup(f"{postcode}"))
+            extendedPostcodeList = geocode(postcode).address.split(",")
+            shorterExtendedPostcode = str(extendedPostcodeList[0] + " " + extendedPostcodeList[1]) if extendedPostcodeList else postcode
+            marker.add_child(folium.Popup(f"{shorterExtendedPostcode}"))
             # Adding the marker to the appropriate group based on skill
             if skill == 'Welder':
                marker.add_to(fg2)
